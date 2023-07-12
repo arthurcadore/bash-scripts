@@ -33,13 +33,21 @@ read subnet_mask
 echo "Enter DNS server address: "
 read dns_server
 
-# Get system version (cat /etc/os-release)
+# Get system version (cat /etc/os-release); 
+
 version=$(cat /etc/os-release | grep VERSION_ID | cut -d '"' -f 2)
+
+version0="16.04"
+version1="18.04"
+version2="20.04"
+version3="22.04"
+
+# Check system version and configure interface:
 
 # if version is 18.04, configure interface using netplan 18.04. 
 # if its not, configure interface using netplan 22.04. 
 
-if [ $version == "18.04" ]
+if [ "$version" == "$version1" ]
 then
     echo "Ubuntu 18.04"
 
@@ -49,7 +57,7 @@ then
       renderer: networkd
       ethernets:
         $interface:
-          dhcp4: no
+          dhcp4:  
           addresses: [$ip_address/$subnet_mask]
           gateway4: $gateway
           nameservers:
@@ -84,5 +92,6 @@ echo "Gateway address:"
 ip route show | grep default
 
 echo "DNS addresses:"
-cat /etc/resolv.conf | grep nameserver
+resolvectl status | grep Server
 
+fi
