@@ -1,28 +1,31 @@
-#!/bin/bash
-# Author:Arthur Cadore M. Barcella
+#Author:Arthur Cadore M. Barcella
 # Github: arthurcadore
 
 # Code: Acess device from ssh and aplly any command;
-# Execution example: ./access_device.sh 10.0.0.1 "system version"
+# Execution example: ./access_device.sh 10.0.0.1 Admin@01
 
 # first of all, the script verifies if all arguments was passed: 
 if [ $# -ne 2 ]; then
-    echo "É necessário fornecer o IP e o comando como argumentos."
-    echo "Exemplo de uso: $0 endereço_IP 'system version'"
-    exit 1
+	    echo "Its necessary to input IP address and password to execute!"
+	        echo "Command example: $0 <IP_address> <Password>"
+		    exit 1
 fi
 
 # Get IP (First Argument) and put it to variable "IP":
 IP="$1"
 
-# Get the command syntax (Second Argument) and put it to variable "IP":
-COMMAND="$2"
+# Get Password (Second Argument) and put it to variable "PASSW":
+PASSW="$2"
 
-# Variáveis de conexão SSH
-USUARIO="nome_de_usuário"
-SENHA="senha"
+# VariÃ¡veis de conexÃ£o SSH
+USUARIO="admin"
 
 # Execute command, 
-OUTPUT=$(sshpass -p "$SENHA" ssh -o StrictHostKeyChecking=no $USUARIO@$IP "$COMMAND")
+sshpass -p "$PASSW" ssh -o StrictHostKeyChecking=no $USUARIO@$IP << EOF
 
-echo "$OUTPUT"
+    logread
+    ubus call uci get {config:network}
+
+EOF
+
+# echo "$OUTPUT"
