@@ -3,6 +3,7 @@
 # Github: arthurcadore
 
 # Code: Acess device from ssh and aplly any command;
+# Execution example: ./access_device.sh 10.0.0.1 "system version"
 
 # first of all, the script verifies if all arguments was passed: 
 if [ $# -ne 2 ]; then
