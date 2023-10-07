@@ -1,0 +1,14 @@
+# Author: Arthur Cadore M. Barcella
+network:
+  ethernets:
+    renderer: networkd
+    ens18:
+      #dhcp4: true
+       addresses:
+          - 10.0.0.2/24
+       nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+       routes:
+        - to: default
+          via: 10.0.0.1
+  version: 2
