@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # Author: Arthur Cadore M. Barcella
-# Gihub: arthurcadore 
+# Gihub: arthurcadore
 
 # Code: Set static IP address for interface on Ubuntu 22.04/20.04/18.04/16.04.
-# The script works editing the main interface network files.  
+# The script works editing the main interface network files.
 
-# Get configuration parameters by the user:  
+# Get configuration parameters by the user:
 
 # Interface name
 # Print interface list to user:
 echo "Interface name List:"
 ip -br link show
 
-# Get interface name by user: 
+# Get interface name by user:
 echo "Enter interface name (string): "
 read interface
 
@@ -33,7 +33,7 @@ read subnet_mask
 echo "Enter DNS server address: "
 read dns_server
 
-# Get system version (cat /etc/os-release); 
+# Get system version (cat /etc/os-release);
 
 version=$(cat /etc/os-release | grep VERSION_ID | cut -d '"' -f 2)
 
@@ -44,15 +44,14 @@ version3="22.04"
 
 # Check system version and configure interface:
 
-# if version is 18.04, configure interface using netplan 18.04. 
-# if its not, configure interface using netplan 22.04. 
+# if version is 18.04, configure interface using netplan 18.04.
+# if its not, configure interface using netplan 22.04.
 
-if [ "$version" == "$version1" ]
-then
-    echo "Ubuntu 18.04"
+if [ "$version" == "$version1" ]; then
+  echo "Ubuntu 18.04"
 
-    # Configure interface using netplan (Ubuntu 18.04)
-    sudo echo "network:
+  # Configure interface using netplan (Ubuntu 18.04)
+  sudo echo "network:
       version: 2
       renderer: networkd
       ethernets:
@@ -61,16 +60,16 @@ then
           addresses: [$ip_address/$subnet_mask]
           gateway4: $gateway
           nameservers:
-            addresses: [$dns_server]" > /etc/netplan/01-netcfg.yaml
+            addresses: [$dns_server]" >/etc/netplan/01-netcfg.yaml
 
-    # Apply changes
-    netplan apply
+  # Apply changes
+  netplan apply
 
 else
-    echo "Ubuntu 22.04"
+  echo "Ubuntu 22.04"
 
-    # configure interface using netplan (Ubuntu 22.04)
-    sudo echo "network:
+  # configure interface using netplan (Ubuntu 22.04)
+  sudo echo "network:
       version: 2
       renderer: networkd
       ethernets:
@@ -79,19 +78,19 @@ else
           addresses: [$ip_address/$subnet_mask]
           gateway4: $gateway
           nameservers:
-            addresses: [$dns_server]" > /etc/netplan/00-installer-config.yaml
-      
-    # Apply changes
-    netplan apply
+            addresses: [$dns_server]" >/etc/netplan/00-installer-config.yaml
 
-# Resumo das configs: 
-echo "IP address:"
-ip addr show $interface | grep inet
+  # Apply changes
+  netplan apply
 
-echo "Gateway address:"
-ip route show | grep default
+  # Resumo das configs:
+  echo "IP address:"
+  ip addr show $interface | grep inet
 
-echo "DNS addresses:"
-resolvectl status | grep Server
+  echo "Gateway address:"
+  ip route show | grep default
+
+  echo "DNS addresses:"
+  resolvectl status | grep Server
 
 fi

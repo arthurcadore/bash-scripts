@@ -21,7 +21,7 @@ git config --global user.email arthurbarcella.ifsc@gmail.com
 # Salvando as credenciais no chaveiro do S.O. Linux (Ubuntu 22.04)
 git config --global credential.helper /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 
-sudo cp ./zabbix/zabbix.conf /etc/zabbix/zabbix_agent.conf
+sudo cp ./zabbix/zabbix.conf /etc/zabbix/zabbix_agentd.conf
 sudo systemctl restart  zabbix-agent.service
 
 sudo ufw enable 
